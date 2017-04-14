@@ -5,39 +5,29 @@
 #include "matrix_circuit.h"
 
 
-
-void insert(Node *matrix, Node *new_node)
+void matrix_inside_display(Node* matrix)
 {
-	if (matrix->_next == NULL) {
-		matrix->_next = new_node;
-		return;
-	}	
-	
-	insert(matrix->_next, new_node);
+	while (matrix) {
+		printf("%d ", matrix->value);
+		matrix=matrix->next;
+	}
 }
 
-void listprint(Node *matrix)
+
+void add(Node **matrix, int data)
 {
-  Node *p;
-  p = matrix;
-  do {
-    printf("%d ", p->_value); // вывод значения элемента p
-    p = p->_next; // переход к следующему узлу
-  } while (p != NULL);
-}
-
-
-Node* node_new(void) {
-
-    Node* newNode=(Node *)malloc(sizeof(Node));
-    newNode->_rows_id = 0;
-    newNode->_value = 0;
-    newNode->_next = NULL;
-
-    return newNode;
-}
-
-
+    Node *temp = NULL; 
+    if(!(*matrix))
+    {
+        temp = (Node *)malloc(sizeof(Node));
+        temp->next = NULL;
+        temp->value = data;
+        *matrix = temp;
+        return;
+    }
+    add(&(*matrix)->next, data);
+    free(temp);
+} 
 
 void matrix_read(int argc, char **argv) {
 
@@ -73,21 +63,20 @@ void matrix_read(int argc, char **argv) {
     
     // read matrix from file
     int element = 0;
-
-    Node* matrix = node_new();
+    Node *matrix;
+    matrix =NULL;
     for (int row = 0; row < rows; row++) {
     	for (int column = 0; column < columns; column++) {
     		fscanf(in, "%d", &element);
     		if (element != 0) { 
-				Node* new_node = node_new(); 
-				new_node->_value = element; 
-				insert(matrix, new_node);
-			
-			} 
+    		    add(&matrix, element);
+		}	
                         
     	}	
     }
+ 	
+    matrix_inside_display(matrix);
   
-    	
-   listprint(matrix);
+    fclose(in);
     
+}
