@@ -8,13 +8,16 @@
 void matrix_inside_display(Node* matrix)
 {
 	while (matrix) {
+		printf("%d ", matrix->rows_id);
 		printf("%d ", matrix->value);
+		
+		printf("\n");
 		matrix=matrix->next;
 	}
 }
 
 
-void add(Node **matrix, int data)
+void add(Node **matrix, int data, int column)
 {
     Node *temp = NULL; 
     if(!(*matrix))
@@ -22,14 +25,15 @@ void add(Node **matrix, int data)
         temp = (Node *)malloc(sizeof(Node));
         temp->next = NULL;
         temp->value = data;
+        temp->rows_id = column;
         *matrix = temp;
         return;
     }
-    add(&(*matrix)->next, data);
+    add(&(*matrix)->next, data, column);
     free(temp);
 } 
 
-void matrix_read(int argc, char **argv) {
+Node* matrix_read(int argc, char **argv) {
 
 	FILE *in = fopen(argv[1], "r");
 
@@ -64,19 +68,24 @@ void matrix_read(int argc, char **argv) {
     // read matrix from file
     int element = 0;
     Node *matrix;
-    matrix =NULL;
+    matrix = NULL;
     for (int row = 0; row < rows; row++) {
-    	for (int column = 0; column < columns; column++) {
+    	for (int column = 0; column <columns; column++) {
     		fscanf(in, "%d", &element);
+    		if (column == 0) {
+    			add(&matrix, (row + 1), 0);
+    		
+    		}
     		if (element != 0) { 
-    		    add(&matrix, element);
-		}	
+    		    add(&matrix, element, (column+1));
+			}	
                         
     	}	
     }
- 	
-    matrix_inside_display(matrix);
+ 	return(matrix);
+    
   
     fclose(in);
     
 }
+
