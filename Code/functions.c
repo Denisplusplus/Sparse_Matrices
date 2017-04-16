@@ -4,6 +4,9 @@
 #include "functions.h"
 #include "matrix_circuit.h"
 
+
+
+
 int non_zero_str(int row, char* filename, int rows, int columns)
 {
 	FILE *file = fopen(filename, "r");
@@ -12,12 +15,12 @@ int non_zero_str(int row, char* filename, int rows, int columns)
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < columns; j++) {
 			fscanf(file, "%d", &element);
-			if ((i == row + 1) && (element == 0)) {
+			if ((i == row ) && (element == 0)) {
 				q++;
 			}
 		}
 	}
-	return !(q == rows);
+	return !(q == columns);
 	fclose(file);
 }
 
@@ -63,17 +66,54 @@ void information_about_representation()
 }
 
 
-void matrix_inside_display(Node* matrix)
+void matrix_display_internal(Node* matrix)
 {	
-	
+	printf("\nHere is internal representation of matrix \n");
 	printf("Column/Row  Value \n");
 	while (matrix) {
-		printf("     %d ", matrix->coloumns_id);
+		printf("     %d ", matrix->columns_id);
 		printf("       %d\n", matrix->value);
 		matrix=matrix->next;
 	}
 	printf("Type: program -repinfo to gain more information about matrix representation\n");
 
+}
+
+int element_find(Node* matrix, int i, int j)
+{
+	
+	while(matrix){
+		if ((matrix->columns_id == 0) && (matrix->value == i) ){
+			matrix = matrix->next;
+			while(matrix) {
+				if (matrix->columns_id == 0) {
+					return 0;
+				}
+				if ((matrix->columns_id == j)){
+					return(matrix->value);
+				} else {
+					matrix=matrix->next;
+				}
+			}	
+		} else {
+			matrix=matrix->next;
+		}
+	}
+	return 0;
+
+}
+void matrix_display_external(Node* matrix, int rows, int columns)
+{
+	printf("\nHere is external representation of matrix \n");
+	int value = 0;
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < columns; j++) {
+			value = element_find(matrix, i+1, j+1);
+			printf("%d ", value);
+		}
+		printf("\n");
+	}
+	printf("\n");
 }
 
 
@@ -85,13 +125,14 @@ void add(Node **matrix, int column, int data)
         temp = (Node *)malloc(sizeof(Node));
         temp->next = NULL;
         temp->value = data;
-        temp->coloumns_id = column;
+        temp->columns_id = column;
         *matrix = temp;
         return;
     }
     add(&(*matrix)->next, column, data);
     free(temp);
 } 
+
 
 Node* matrix_read(int argc, char **argv) {
 
