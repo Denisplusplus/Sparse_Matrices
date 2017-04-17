@@ -4,9 +4,66 @@
 #include "functions.h"
 #include "matrix_circuit.h"
 
+Node* matrix_devide(Node **matrix)
+{
+	int column_id_devide = column_penult_element(*matrix);
+	int max = element_max_find(*matrix);
+	while (*matrix) {
+		if (((*matrix)->columns_id) == column_id_devide) {
+			(*matrix)->value = ((*matrix)->value) / max; 
+		}
+		*matrix = (*matrix)->next;
+	}
+
+	return(&(*matrix));
+}
 
 
 
+
+int column_penult_element(Node* matrix)
+{
+	int penult = 0;
+	int column_max_id = column_max(matrix);
+	int element_max = element_max_find(matrix);
+	while (matrix) {
+		if ((matrix->columns_id) && (matrix->value == element_max) && ((matrix->columns_id) < column_max_id)  && ((matrix->columns_id) >= penult)) {
+			penult = matrix->columns_id;
+		}
+
+		matrix = matrix->next;
+	}
+	if (penult == 0) {
+		return(column_max_id);
+	}
+	return (penult);
+}
+int column_max(Node* matrix)
+{
+	int max = element_max_find(matrix);
+	int column_max_number = 0;
+	while (matrix) {
+		if ((matrix->columns_id) && (matrix->value == max) && ((matrix->columns_id) > column_max_number)) {
+			column_max_number = matrix->columns_id;
+		}
+
+		matrix = matrix->next;
+	}
+	return(column_max_number);
+
+}
+
+int element_max_find(Node *matrix)
+{	
+	int max = 0;
+	while(matrix) {
+		if ((abs(matrix->value) > abs(max)) && (matrix->columns_id)) {
+			max = matrix->value;
+		}
+		matrix = matrix->next;
+	}		
+	return(max);
+}
 int non_zero_str(int row, char* filename, int rows, int columns)
 {
 	FILE *file = fopen(filename, "r");
@@ -23,6 +80,7 @@ int non_zero_str(int row, char* filename, int rows, int columns)
 	return !(q == columns);
 	fclose(file);
 }
+
 
 
 int columns_quantity(char* filename)
