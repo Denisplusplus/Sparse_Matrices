@@ -4,22 +4,27 @@
 #include "functions.h"
 #include "matrix_circuit.h"
 
-Node* matrix_devide(Node **matrix)
-{
-	int column_id_devide = column_penult_element(*matrix);
-	int max = element_max_find(*matrix);
-	while (*matrix) {
-		if (((*matrix)->columns_id) == column_id_devide) {
-			(*matrix)->value = ((*matrix)->value) / max; 
-		}
-		*matrix = (*matrix)->next;
-	}
 
-	return(&(*matrix));
+void help()
+{
+	printf("This program is required to work with inputed in file matrix.\n");
+	printf("To start the progtam type in console ./program MATRIX_FILE \n\n");
 }
 
+Node* matrix_devide(Node *matrix)
+{
+	int column_id_devide = column_penult_element(matrix);
+	int max = element_max_find(matrix);
 
+	while (matrix) {
+		if ((matrix->columns_id) == column_id_devide) {
+			matrix->value = (matrix->value) / max; 	
+		}	
+		matrix = matrix->next;
+	}
 
+	return(matrix);
+}
 
 int column_penult_element(Node* matrix)
 {
@@ -120,7 +125,7 @@ void information_about_representation()
 	printf("of the element. A zero in the first cell indicates the end of the\n");
 	printf("line, and the second cell in this case contains the number of the\n"); 
 	printf("next stored line. Zeros in both cells are a sign of the end of the\n");
-	printf("list of non-zero elements \n");
+	printf("list of non-zero elements \n\n");
 }
 
 
