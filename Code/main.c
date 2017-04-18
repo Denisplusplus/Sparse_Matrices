@@ -7,8 +7,8 @@
 
 int main(int argc, char **argv) {
 
-	Node* matrix = matrix_read(argc, argv);
-	int rows = rows_quantity(argv[1]);
+    Node* matrix = matrix_read(argc, argv);
+    int rows = rows_quantity(argv[1]);
     int columns = columns_quantity(argv[1]);
     Node* new_matr = matrix;
 
