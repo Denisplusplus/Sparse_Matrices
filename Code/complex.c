@@ -20,11 +20,40 @@ complex complex_divide(complex x, complex y)
 }
 
 void complex_print(complex x)
-{
+{	
+	if (x.b == 0.0) {
+		printf("%.1lf\n", x.a);
+	} else
 	if (x.b < 0.0) {
 		printf("%.1lf%.1lfi\n", x.a, x.b);
 	} else {
 		printf("%.1lf+%.1lfi\n", x.a, x.b);
-	}
+	} 
+
 	
+}
+
+int element_not_zero(complex x)
+{
+	if ((x.a != 0.0) && (x.b != 0.0)) {
+		return 1;
+	}
+	return 0;
+
+}
+
+complex element_zero()
+{
+	complex x;
+	x.a = 0.0;
+	x.b = 0.0;
+	return(x);
+}
+
+complex complexing(int row)
+{
+	complex x;
+	x.a = (double)(row);
+	x.b = 0.0;
+	return x;
 }
