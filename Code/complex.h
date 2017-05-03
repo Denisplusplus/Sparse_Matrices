@@ -3,13 +3,14 @@
 
 
 typedef struct {
-     double a,b;
+     double re, im;
  } complex;
 
 complex complex_divide(complex x, complex y);
-double complex_absolute(complex x);
+double complex_abs(complex x);
 void complex_print(complex x);
 int element_not_zero(complex x);
+int equal(complex x, complex y);
 complex element_zero();
 complex complexing(int row);
 #endif
